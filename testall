@@ -1,0 +1,95 @@
+#!/bin/bash
+
+export LAB=lab2
+ARCH=
+
+if [ "$1" == "32" ]; then
+  ARCH=_32
+  (make cleantests32; make tests32) || exit 1
+else
+  (make cleantests; make tests) || exit 1
+fi
+
+
+total=0
+totalmax=0
+
+rm -f total.txt *out$ARCH
+
+# Test driver
+function runtest {
+  prog=$1
+  args=$2
+  testinput=$3
+  grade=$4
+  totalmax=`expr $totalmax + $grade`;
+  inputdescr=
+  echo > none
+  if [ "$testinput" != "none" ]; then
+      inputdescr=" < $testinput"
+  fi
+  descr="$prog $args $inputdescr"
+
+  echo "======= $descr ==========="
+
+  #Run tested program
+  ./$prog$ARCH $args < $testinput > $prog.out$ARCH
+  ./$prog.org$ARCH $args< $testinput > $prog.org.out$ARCH
+  diff $prog.out$ARCH $prog.org.out$ARCH > diff.out
+  if [ $? -eq 0 ]; then
+      cat $prog.out$ARCH
+      echo Test passed...;
+      printf "%-36s: %-3d of %-3d\n" "$descr " $grade $grade >> total.txt
+      total=`expr $total + $grade`;
+  else
+      echo "*****Test Failed*****";
+      echo ------ Your Output ----------
+      cat $prog.out$ARCH
+      echo ------ Expected Output ------
+      cat $prog.org.out$ARCH
+      echo ------ Difference -----------
+      cat diff.out
+
+      echo -----------------------------
+      printf "%-36s: %-3d of %-3d\n" "$descr " 0 $grade >> total.txt
+  fi
+  echo
+}
+
+# List of tests running
+runtest test1 "" none 5
+runtest test1-1 "" none 5
+runtest test1-2 "" none 10
+runtest test1-3 "" none 10
+runtest test1-4 "" none 10
+runtest test2 "" none 10
+runtest test3 "" none 10
+runtest test4 "" none 10
+runtest test5 "" none 10
+runtest test6 "" none 10
+runtest test7 "" none 10
+runtest test8-1 "" none 10
+runtest test8-2 "" none 10
+runtest test8-3 "" none 10
+runtest test8-4 "" none 10
+runtest test8-5 "" none 10
+runtest test8-7 "" none 10
+
+
+echo
+echo
+echo   "-------------------------------------------------"
+echo   "CS252: $LAB. $USER   "
+echo   "-------------------------------------------------"
+cat total.txt
+echo   "-------------------------------------------------"
+echo   "CS252: $LAB. $USER" `date` " Total: " $total of $totalmax >> total.out
+echo >> total.out
+
+cat total.out
+cat total.out >> .local.total.out
+echo
+
+#Do not remove or comment these lines. They are used for monitoring progress.
+# git add *.c *.h  >> .local.git.out
+# git commit -a -m "$total of $totalmax" >> .local.git.out
