@@ -229,6 +229,24 @@ void *allocate_object(size_t size) {
   // For now, naively get the memory from the OS every time.
   // (You need to change this.)
 
+  object_header tmp_header = free_list_sentinel->next;
+
+  while (tmp_header != free_list_sentinel) {
+    
+    //decide which approach: split, not split and ask for new memory
+    
+    if (tmp_header->object_size > rounded_size) {
+      
+    }
+    else if (tmp_header->object_size > size &&
+	     tmp_header->object_size <= rounded_size) { /*situation of 
+                                                          don't need split*/  
+    }
+    else {      /* situation of need to look for new memory*/
+      
+    }
+  }
+  
   void *new_block = get_memory_from_os(rounded_size);
 
   object_header *new_object = (object_header *) new_block;
