@@ -229,7 +229,7 @@ void *allocate_object(size_t size) {
   // For now, naively get the memory from the OS every time.
   // (You need to change this.)
 
-  object_header *tmp_header = current_header;
+  object_header *tmp_header = free_list->next;
 
   while (tmp_header != free_list) {
     
