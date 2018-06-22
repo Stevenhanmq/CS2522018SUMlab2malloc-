@@ -229,7 +229,7 @@ void *allocate_object(size_t size) {
   // For now, naively get the memory from the OS every time.
   // (You need to change this.)
 
-  object_header tmp_header = free_list->next;
+  object_header *tmp_header = current_header;
 
   while (tmp_header != free_list) {
     
@@ -245,6 +245,7 @@ void *allocate_object(size_t size) {
     else {      /* situation of need to look for new memory*/
       
     }
+    tmp_header = tmp_header->next;
   }
   
   void *new_block = get_memory_from_os(rounded_size);
