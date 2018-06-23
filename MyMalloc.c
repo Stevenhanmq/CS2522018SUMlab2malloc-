@@ -237,15 +237,16 @@ void *allocate_object(size_t size) {
     
     if (tmp_header->object_size > rounded_size) {
       
+      break;
     }
-    else if (tmp_header->object_size > size &&
+    else if (tmp_header->object_size >= size &&
 	     tmp_header->object_size <= rounded_size) { /*situation of 
-                                                          don't need split*/  
+                                                          don't need split*/
+      break;
     }
-    else {      /* situation of need to look for new memory*/
-      
+    else {      /* situation of need to look keep looking*/
+      tmp_header = tmp_header->next;
     }
-    tmp_header = tmp_header->next;
   }
   
   void *new_block = get_memory_from_os(rounded_size);
