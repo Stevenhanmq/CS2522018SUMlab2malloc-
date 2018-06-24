@@ -228,9 +228,43 @@ void *allocate_object(size_t size) {
 
   // For now, naively get the memory from the OS every time.
   // (You need to change this.)
-
+  
   object_header *tmp_header = free_list->next;
+  if (free_list->next == free_list) {
+    void *new_block = get_memory_from_os(ARENA_SIZE +
+					 (2 * sizeof(object_header)) +
+					 (2 * sizeof(object_footer)));
+    object_footer *start_fencepost = (object_footer *) new_block;
+    object_header *current_header =
+      (object_header *) ((char *) start_fencepost +
+			 sizeof(object_footer));
+    object_footer *current_footer =
+      (object_footer *) ((char *) current_header +
+			 ARENA_SIZE +
+			 sizeof(object_header));
+    object_header *end_fencepost =
+      (object_header *) ((char *) current_footer +
+			 sizeof(object_footer));
+    start_fencepost->status = ALLOCATED;
+    start_fencepost->object_size = 0;
+    
+    end_fencepost->status = ALLOCATED;
+    end_fencepost->object_size = 0;
+    end_fencepost->next = NULL;
+    end_fencepost->prev = NULL;
 
+    current_header->status = UNALLOCATED;
+    current_header->object_size = ARENA_SIZE +
+      sizeof(object_header) +
+      sizeof(object_footer);
+    
+    current_footer->status = UNALLOCATED;
+    current_footer->object_size = current_header->object_size;
+    free_list->prev = current_header;
+    free_list->next = current_header;
+    current_header->next = free_list;
+    current_header->prev = free_list;
+  }
   while (tmp_header != free_list) {
     
     //decide which approach: split, not split and ask for new memory
@@ -242,6 +276,13 @@ void *allocate_object(size_t size) {
     else if (tmp_header->object_size >= size &&
 	     tmp_header->object_size <= rounded_size) { /*situation of 
                                                           don't need split*/
+      object_footer *tmp_footer =
+	(object_footer*)((char*)tmp_header +
+                               size + sizeof(object_header));
+      tmp_header->status = ALLOCATED;
+      tmp_footer->status = ALLOCATED;
+      tmp_header->next->prev = tmp_header->prev;
+      tmp_header->prev->next = tmp_header->next;
       break;
     }
     else {      /* situation of need to look keep looking*/
