@@ -300,10 +300,8 @@ void *allocate_object(size_t size) {
       new_header->next->prev = new_header;
       break;
     }
-    else if (blank_size >= (rounded_size
-					 - sizeof(object_header)
-					 - sizeof(object_footer)) &&
-	     blank_size <= rounded_size) { /*situation of 
+    else if (blank_size - rounded_size < MINIMUM_SIZE &&
+	     blank_size - size >= 0) { /*situation of 
                                                           don't need split*/
       size = tmp_header->object_size - sizeof(object_header)
                                      - sizeof(object_footer);
