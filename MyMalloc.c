@@ -398,6 +398,9 @@ void free_object(void *ptr) {
     iter_header->prev = tmp_header;
     tmp_header->next = iter_header;
   }
+  printf("%p\n",&iter_header);
+  printf("%p\n",&iter_header->next);
+
   
 
 } /* free_object() */
