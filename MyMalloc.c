@@ -289,7 +289,7 @@ void *allocate_object(size_t size) {
 			          + sizeof(object_header)
 	              		  + blank_size);
       old_footer->object_size = old_footer->object_size - rounded_size;
-            printf("%d\n",(int)old_footer->object_size);
+      //            printf("%d\n",(int)old_footer->object_size);
       tmp_header->status = ALLOCATED;
       new_footer->object_size = rounded_size;
       new_footer->status = ALLOCATED;
@@ -308,7 +308,7 @@ void *allocate_object(size_t size) {
 	                              + sizeof(object_header)
 	                              + MINIMUM_SIZE) { /*situation of 
                                                           don't need split*/
-      printf("anybody see me ?????\n");
+      // printf("anybody see me ?????\n");
       size = tmp_header->object_size - sizeof(object_header)
                                      - sizeof(object_footer);
       object_footer *tmp_footer =
@@ -318,6 +318,7 @@ void *allocate_object(size_t size) {
       tmp_footer->status = ALLOCATED;
       tmp_header->next->prev = tmp_header->prev;
       tmp_header->prev->next = tmp_header->next;
+      // printf("anybody see me finish?????\n");
       break;
     }
     else {      /* situation of need to look keep looking*/
