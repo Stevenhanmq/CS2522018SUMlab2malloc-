@@ -234,7 +234,6 @@ void *allocate_object(size_t size) {
   
   object_header *tmp_header = free_list->next;
   if (free_list->next == free_list) {
-
     //check if the memory has been used all up
 
     void *new_block = get_memory_from_os(ARENA_SIZE +
@@ -271,13 +270,15 @@ void *allocate_object(size_t size) {
     current_header->next = free_list;
     current_header->prev = free_list;
   }
+  tmp_header = free_list->next;
   while (tmp_header != free_list) {
     
     //decide which approach: split, not split and ask for new memory
     int blank_size = tmp_header->object_size - sizeof(object_footer)
                                         - sizeof(object_header);    
-    if (tmp_header->object_size > rounded_size + sizeof(object_header)
-	                                        + MINIMUM_SIZE) {
+    if (tmp_header->object_size >=rounded_size + sizeof(object_header)
+	                                       + sizeof(object_footer)
+	                                       + MINIMUM_SIZE) {
       //            printf("here \n");
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
@@ -304,8 +305,9 @@ void *allocate_object(size_t size) {
       break;
     }
     else if (tmp_header->object_size >= rounded_size &&
-	     tmp_header->object_size <= rounded_size
+	     tmp_header->object_size < rounded_size
 	                              + sizeof(object_header)
+	                              + sizeof(object_footer)
 	                              + MINIMUM_SIZE) { /*situation of 
                                                           don't need split*/
       // printf("anybody see me ?????\n");
@@ -322,7 +324,6 @@ void *allocate_object(size_t size) {
       break;
     }
     else {      /* situation of need to look keep looking*/
-
       if (tmp_header->next == free_list) {
 
         //situation when there is not a block big enough
