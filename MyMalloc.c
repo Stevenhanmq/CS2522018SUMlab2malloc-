@@ -231,6 +231,9 @@ void *allocate_object(size_t size) {
   
   object_header *tmp_header = free_list->next;
   if (free_list->next == free_list) {
+
+    //check if the memory has been used all up
+
     void *new_block = get_memory_from_os(ARENA_SIZE +
 					 (2 * sizeof(object_header)) +
 					 (2 * sizeof(object_footer)));
@@ -255,8 +258,8 @@ void *allocate_object(size_t size) {
 
     current_header->status = UNALLOCATED;
     current_header->object_size = ARENA_SIZE +
-      sizeof(object_header) +
-      sizeof(object_footer);
+                                  sizeof(object_header) +
+                                  sizeof(object_footer);
     
     current_footer->status = UNALLOCATED;
     current_footer->object_size = current_header->object_size;
@@ -270,12 +273,34 @@ void *allocate_object(size_t size) {
     //decide which approach: split, not split and ask for new memory
     
     if (tmp_header->object_size > rounded_size) {
-      
+      object_footer *new_footer =
+	(object_footer *) ((char *) tmp_header + rounded_size
+			   - sizeof(object_footer));
+      int blank_size = tmp_header->object_size - sizeof(object_footer)
+	                                - sizeof(object_header);
+      object_footer *old_footer =
+	(object_footer *) ((char *) tmp_header
+			          + sizeof(object_header)
+	              		  + blank_size);
+      old_footer->object_size = old_footer->object_size - rounded_size;
+      tmp_header->status = ALLOCATED;
+      new_footer->object_size = rounded_size;
+      new_footer->status = ALLOCATED;
+      object_header *new_header =
+	(object_header *) ((char *) tmp_header + rounded_size);
+      new_header->status = UNALLOCATED;
+      new_header->object_size = old_footer->object_size;
+      tmp_header->prev->next = new_header;
+      new_header->next = tmp_header->next;
+      new_header->prev = tmp_header->prev;
+      new_header->next->prev = new_header;
       break;
     }
     else if (tmp_header->object_size >= size &&
 	     tmp_header->object_size <= rounded_size) { /*situation of 
                                                           don't need split*/
+      size = tmp_header->object_size - sizeof(object_header)
+                                     - sizeof(object_footer);
       object_footer *tmp_footer =
 	(object_footer*)((char*)tmp_header +
                                size + sizeof(object_header));
@@ -286,18 +311,56 @@ void *allocate_object(size_t size) {
       break;
     }
     else {      /* situation of need to look keep looking*/
+
+      if (tmp_header->next == free_list) {
+
+        //situation when there is not a block big enough
+
+        void *new_block = get_memory_from_os(ARENA_SIZE +
+                                         (2 * sizeof(object_header)) +
+	                                 (2 * sizeof(object_footer)));
+        object_footer *start_fencepost = (object_footer *) new_block;
+        object_header *current_header =
+          (object_header *) ((char *) start_fencepost +
+			     sizeof(object_footer));
+	object_footer *current_footer =
+	  (object_footer *) ((char *) current_header +
+			     ARENA_SIZE +
+			     sizeof(object_header));
+	object_header *end_fencepost =
+	  (object_header *) ((char *) current_footer +
+			     sizeof(object_footer));
+	start_fencepost->status = ALLOCATED;
+	start_fencepost->object_size = 0;
+	
+	end_fencepost->status = ALLOCATED;
+	end_fencepost->object_size = 0;
+	end_fencepost->next = NULL;
+	end_fencepost->prev = NULL;
+	
+	current_header->status = UNALLOCATED;
+	current_header->object_size = ARENA_SIZE +
+	                              sizeof(object_header) +
+	                              sizeof(object_footer);
+	
+	current_footer->status = UNALLOCATED;
+	current_footer->object_size = current_header->object_size;
+    	tmp_header->next->prev = current_header;
+        current_header->next = tmp_header->next;
+	tmp_header->next = current_header;
+	current_header->prev = tmp_header;
+      }
       tmp_header = tmp_header->next;
     }
   }
   
-  void *new_block = get_memory_from_os(rounded_size);
 
-  object_header *new_object = (object_header *) new_block;
-  new_object->object_size = rounded_size;
+//object_header *new_object = (object_header *) new_block;
+//  new_object->object_size = rounded_size;
 
   // Return a pointer to usable memory
 
-  return (void *) (new_object + 1);
+  return (void *) (tmp_header + 1);
 } /* allocate_object() */
 
 /*
