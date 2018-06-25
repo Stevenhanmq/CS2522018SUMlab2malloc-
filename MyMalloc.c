@@ -216,6 +216,9 @@ void *allocate_object(size_t size) {
     size = MINIMUM_SIZE;
   }
 
+  if (size%8 != 0) {
+    size = (size%8 + 1) * 8;
+  }
   // Add the object_header/Footer to the size and round the total size
   // up to a multiple of 8 bytes for alignment.
   // Bitwise-and with ~(SIZE_PRECISION - 1) will set the last x bits to 0,
@@ -273,8 +276,7 @@ void *allocate_object(size_t size) {
     //decide which approach: split, not split and ask for new memory
     int blank_size = tmp_header->object_size - sizeof(object_footer)
                                         - sizeof(object_header);    
-    if (blank_size - rounded_size > MINIMUM_SIZE) {
-      printf("I entered here \n");
+    if (blank_size - rounded_size >= MINIMUM_SIZE) {
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
 			   - sizeof(object_footer));
@@ -303,7 +305,6 @@ void *allocate_object(size_t size) {
 					 - sizeof(object_footer)) &&
 	     blank_size <= rounded_size) { /*situation of 
                                                           don't need split*/
-      printf("at lease i am here \n");
       size = tmp_header->object_size - sizeof(object_header)
                                      - sizeof(object_footer);
       object_footer *tmp_footer =
