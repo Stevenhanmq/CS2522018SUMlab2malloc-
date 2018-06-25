@@ -390,9 +390,10 @@ void free_object(void *ptr) {
 
   object_header *tmp_header = (object_header*)((char *) ptr
 					       - sizeof(object_header));
-  object_header *iter_header = free_list->next;
+  object_header *iter_header = free_list;
   while(&tmp_header > &iter_header->next){
     iter_header = iter_header->next;
+    printf("infinite loop");
   }
 
 } /* free_object() */
