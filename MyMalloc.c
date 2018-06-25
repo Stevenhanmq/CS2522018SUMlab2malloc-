@@ -289,7 +289,7 @@ void *allocate_object(size_t size) {
 			          + sizeof(object_header)
 	              		  + blank_size);
       old_footer->object_size = old_footer->object_size - rounded_size;
-      //      printf("%d\n",(int)old_footer->object_size);
+            printf("%d\n",(int)old_footer->object_size);
       tmp_header->status = ALLOCATED;
       new_footer->object_size = rounded_size;
       new_footer->status = ALLOCATED;
