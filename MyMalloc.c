@@ -273,7 +273,7 @@ void *allocate_object(size_t size) {
     //decide which approach: split, not split and ask for new memory
     int blank_size = tmp_header->object_size - sizeof(object_footer)
                                         - sizeof(object_header);    
-    if (blank_size > rounded_size) {
+    if (blank_size - rounded_size >= MINIMUM_SIZE) {
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
 			   - sizeof(object_footer));
