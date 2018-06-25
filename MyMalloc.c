@@ -383,7 +383,17 @@ void *allocate_object(size_t size) {
  */
 
 void free_object(void *ptr) {
-  // Add your code here
+
+  //first find the right location where the address of the freed object
+  //should be at,
+  //and then find out that if it should merge with adjacent blocks
+
+  object_header *tmp_header = (object_header*)((char *) ptr
+					       - sizeof(object_header));
+  object_header *iter_header = free_list->next;
+  while(&tmp_header > &iter_header->next){
+    iter_header = iter_header->next;
+  }
 
 } /* free_object() */
 
