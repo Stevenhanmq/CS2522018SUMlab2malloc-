@@ -278,7 +278,7 @@ void *allocate_object(size_t size) {
                                         - sizeof(object_header);    
     if (tmp_header->object_size >= rounded_size + sizeof(object_header)
 	                                        + MINIMUM_SIZE) {
-            printf("here \n");
+      //            printf("here \n");
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
 			   - sizeof(object_footer));
@@ -304,7 +304,7 @@ void *allocate_object(size_t size) {
       break;
     }
     else if (tmp_header->object_size >= rounded_size &&
-	     tmp_header->object_size <= rounded_size
+	     tmp_header->object_size < rounded_size
 	                              + sizeof(object_header)
 	                              + MINIMUM_SIZE) { /*situation of 
                                                           don't need split*/
