@@ -217,7 +217,7 @@ void *allocate_object(size_t size) {
   }
 
   if (size%8 != 0) {
-    size = (size%8 + 1) * 8;
+    size = (size/8 + 1) * 8;
   }
   // Add the object_header/Footer to the size and round the total size
   // up to a multiple of 8 bytes for alignment.
