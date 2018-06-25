@@ -393,7 +393,12 @@ void free_object(void *ptr) {
   object_header *iter_header = free_list;
   if (iter_header->next == iter_header) {
     printf("yes\n");
+    iter_header->next = tmp_header;
+    tmp_header->prev = iter_header;
+    iter_header->prev = tmp_header;
+    tmp_header->next = iter_header;
   }
+  
 
 } /* free_object() */
 
