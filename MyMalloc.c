@@ -276,7 +276,7 @@ void *allocate_object(size_t size) {
     //decide which approach: split, not split and ask for new memory
     int blank_size = tmp_header->object_size - sizeof(object_footer)
                                         - sizeof(object_header);    
-    if (tmp_header->object_size >= rounded_size + sizeof(object_header)
+    if (tmp_header->object_size > rounded_size + sizeof(object_header)
 	                                        + MINIMUM_SIZE) {
       //            printf("here \n");
       object_footer *new_footer =
@@ -304,7 +304,7 @@ void *allocate_object(size_t size) {
       break;
     }
     else if (tmp_header->object_size >= rounded_size &&
-	     tmp_header->object_size < rounded_size
+	     tmp_header->object_size <= rounded_size
 	                              + sizeof(object_header)
 	                              + MINIMUM_SIZE) { /*situation of 
                                                           don't need split*/
