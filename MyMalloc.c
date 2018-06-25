@@ -271,13 +271,14 @@ void *allocate_object(size_t size) {
   while (tmp_header != free_list) {
     
     //decide which approach: split, not split and ask for new memory
-    
-    if (tmp_header->object_size > rounded_size) {
+    int blank_size = tmp_header->object_size - sizeof(object_footer)
+                                        - sizeof(object_header);    
+    if (blank_size > rounded_size) {
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
 			   - sizeof(object_footer));
-      int blank_size = tmp_header->object_size - sizeof(object_footer)
-	                                - sizeof(object_header);
+      //   int blank_size = tmp_header->object_size - sizeof(object_footer)
+      //                                - sizeof(object_header);
       object_footer *old_footer =
 	(object_footer *) ((char *) tmp_header
 			          + sizeof(object_header)
@@ -296,8 +297,10 @@ void *allocate_object(size_t size) {
       new_header->next->prev = new_header;
       break;
     }
-    else if (tmp_header->object_size >= size &&
-	     tmp_header->object_size <= rounded_size) { /*situation of 
+    else if (blank_size >= (rounded_size
+					 - sizeof(object_header)
+					 - sizeof(object_footer)) &&
+	     blank_size <= rounded_size) { /*situation of 
                                                           don't need split*/
       size = tmp_header->object_size - sizeof(object_header)
                                      - sizeof(object_footer);
