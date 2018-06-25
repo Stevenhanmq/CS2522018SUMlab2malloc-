@@ -392,8 +392,8 @@ void free_object(void *ptr) {
 					       - sizeof(object_header));
   object_header *iter_header = free_list;
   while (iter_header->next != free_list) {
-    printf("%d\n",&iter_header);
-    printf("%d\n",&tmp_header);
+    printf("%d\n",&&iter_header);
+    printf("%d\n",&&tmp_header);
   }
 
 } /* free_object() */
