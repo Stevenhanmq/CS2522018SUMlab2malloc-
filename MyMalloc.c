@@ -302,6 +302,7 @@ void *allocate_object(size_t size) {
 					 - sizeof(object_footer)) &&
 	     blank_size <= rounded_size) { /*situation of 
                                                           don't need split*/
+      printf("at lease i am here \n");
       size = tmp_header->object_size - sizeof(object_header)
                                      - sizeof(object_footer);
       object_footer *tmp_footer =
