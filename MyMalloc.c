@@ -406,9 +406,7 @@ void free_object(void *ptr) {
   tmp_header->prev = iter_header;
   tmp_header->next = old_header;
   old_header->prev = tmp_header;
-  object_footer *tmp_footer = (object_footer)((char*)tmp_header + 
-					      tmp_header->object_size -
-					      sizeof(object_footer));
+  object_footer *tmp_footer = (object_footer)((char*)tmp_header + tmp_header->object_size - sizeof(object_footer));
   
   object_header *next_header = (object_header)((char *)tmp_header
 					       + tmp_header->object_size);
