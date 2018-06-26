@@ -400,22 +400,22 @@ void free_object(void *ptr) {
   tmp_header->next = old_header;
   old_header->prev = tmp_header;
   object_footer *tmp_footer = (object_footer*)((char*)tmp_header
-					       + tmp_header->object_size
-					       - sizeof(object_footer));
+                                               + tmp_header->object_size
+                                               - sizeof(object_footer));
   tmp_header->status = UNALLOCATED;
   tmp_footer->status = UNALLOCATED;
   object_header *next_header = (object_header*)((char *)tmp_header
-					       + tmp_header->object_size);
+                                               + tmp_header->object_size);
   
   object_footer *next_footer = (object_footer*)((char *)next_header
-					       + next_header->object_size
-					       - sizeof(object_footer));
+                                               + next_header->object_size
+                                               - sizeof(object_footer));
   
   object_footer *prev_footer = (object_footer*)((char *)tmp_header
-					       - sizeof(object_footer));
+                                               - sizeof(object_footer));
   
   object_header *prev_header = (object_header*)((char *)tmp_header
-					       - prev_footer->object_size);
+                                               - prev_footer->object_size);
   
   if (next_header->status == UNALLOCATED
       && prev_header->status == UNALLOCATED
@@ -429,9 +429,9 @@ void free_object(void *ptr) {
     prev_header->next->prev = prev_header;
   }
   else if ((next_header->status == UNALLOCATED
-	    && prev_header->status == ALLOCATED)||
-	   (next_header->status == UNALLOCATED
-	    && prev_header->status == UNALLOCATED
+            && prev_header->status == ALLOCATED)||
+            (next_header->status == UNALLOCATED
+            && prev_header->status == UNALLOCATED
   && next_footer->object_size != 0)) {    // merge right
     printf("entered 2\n");
     tmp_header->object_size += next_header->object_size;
@@ -441,8 +441,8 @@ void free_object(void *ptr) {
   }
   else if ((next_header->status == UNALLOCATED
            && prev_header->status == UNALLOCATED)||
-	   (next_header->status == UNALLOCATED
-	    && prev_header->status == UNALLOCATED
+           (next_header->status == UNALLOCATED
+           && prev_header->status == UNALLOCATED
   && prev_footer->object_size != 0)) {  // merge left
     printf("entered 3\n");
     prev_header->object_size += tmp_header->object_size;
