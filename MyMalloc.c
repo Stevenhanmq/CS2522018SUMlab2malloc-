@@ -280,19 +280,19 @@ void *allocate_object(size_t size) {
                                                + sizeof(object_footer)
     + MINIMUM_SIZE) {
       object_footer *new_footer =
-	(object_footer *) ((char *) tmp_header + rounded_size
-			   - sizeof(object_footer));
+        (object_footer *) ((char *) tmp_header + rounded_size
+                                  - sizeof(object_footer));
       object_footer *old_footer =
-	(object_footer *) ((char *) tmp_header
-			          + sizeof(object_header)
-	              		  + blank_size);
+        (object_footer *) ((char *) tmp_header
+                                  + sizeof(object_header)
+                                  + blank_size);
       old_footer->object_size = old_footer->object_size - rounded_size;
       tmp_header->status = ALLOCATED;
       tmp_header->object_size = rounded_size;
       new_footer->object_size = rounded_size;
       new_footer->status = ALLOCATED;
       object_header *new_header =
-	(object_header *) ((char *) tmp_header + rounded_size);
+        (object_header *) ((char *) tmp_header + rounded_size);
 
       new_header->status = UNALLOCATED;
       new_header->object_size = old_footer->object_size;
