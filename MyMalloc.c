@@ -400,7 +400,7 @@ void free_object(void *ptr) {
     }*/
   printf("%p\n",&iter_header->next);
   printf("%p\n",&ptr);
-
+  printf("%p\n",&tmp_header);
   
 
 } /* free_object() */
