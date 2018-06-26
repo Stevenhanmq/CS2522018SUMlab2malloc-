@@ -403,7 +403,6 @@ void free_object(void *ptr) {
     iter_header = iter_header->next;
     // printf("here we have a loop");
   }
-   printf("can I get here?\n");
   object_header *old_header = iter_header->next;
   iter_header->next = tmp_header;
   tmp_header->prev = iter_header;
