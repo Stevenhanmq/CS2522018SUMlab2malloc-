@@ -401,7 +401,7 @@ void free_object(void *ptr) {
   while (iter_header->next < tmp_header
 	 && iter_header->next != iter_header) {
     iter_header = iter_header->next;
-    //    printf("here we have a loop");
+    printf("here we have a loop");
   }
   object_header *old_header = iter_header->next;
   iter_header->next = tmp_header;
