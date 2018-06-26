@@ -295,6 +295,7 @@ void *allocate_object(size_t size) {
         (object_header *) ((char *) tmp_header + rounded_size);
 
       new_header->status = UNALLOCATED;
+      old_footer->status = UNALLOCATED;
       new_header->object_size = old_footer->object_size;
       tmp_header->prev->next = new_header;
       new_header->next = tmp_header->next;
