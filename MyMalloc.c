@@ -401,7 +401,7 @@ void free_object(void *ptr) {
   while (iter_header->next < tmp_header
 	 && iter_header->next != iter_header) {
     iter_header = iter_header->next;
-    printf("here we have a loop");
+    //    printf("here we have a loop");
   }
   object_header *old_header = iter_header->next;
   iter_header->next = tmp_header;
@@ -425,6 +425,7 @@ void free_object(void *ptr) {
   
   object_header *prev_header = (object_header*)((char *)tmp_header
 					       - prev_footer->object_size);
+  /*
   if(next_header->status == UNALLOCATED){
     printf("next_header->status == UNALLOCATED\n");  
   }
@@ -436,14 +437,14 @@ void free_object(void *ptr) {
   }
   if(prev_footer->object_size != 0){
     printf("prev_footer->object_size != 0\n");
-  }
+  }*/
 
   
   if (next_header->status == UNALLOCATED
       && prev_header->status == UNALLOCATED
       && next_footer->object_size != 0
       && prev_footer->object_size != 0) {       // merge both
-    printf("entered 1\n");
+    //printf("entered 1\n");
     prev_header->object_size += tmp_header->object_size
                               + next_header->object_size;
     next_footer->object_size = prev_header->object_size;
@@ -457,7 +458,7 @@ void free_object(void *ptr) {
 	    && prev_header->status == UNALLOCATED
 	    && next_footer->object_size != 0)
 	   ) {    // merge right
-    printf("entered 2\n");
+    //printf("entered 2\n");
     tmp_header->object_size += next_header->object_size;
     next_footer->object_size =  tmp_header->object_size;
     tmp_header->next = next_header->next;
@@ -468,14 +469,14 @@ void free_object(void *ptr) {
 	   (next_header->status == UNALLOCATED
 	    && prev_header->status == UNALLOCATED
 	    && prev_footer->object_size != 0)) {  // merge left
-    printf("entered 3\n");
+    //printf("entered 3\n");
     prev_header->object_size += tmp_header->object_size;
     tmp_footer->object_size = prev_header->object_size;
     prev_header->next = tmp_header->next;
     prev_header->next->prev = prev_header;  
   }
   else {
-     printf("entered 4\n");// don't merge
+    //printf("entered 4\n");// don't merge
   }
   return;
   
