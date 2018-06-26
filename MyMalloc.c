@@ -432,7 +432,10 @@ void free_object(void *ptr) {
   if(next_footer->object_size != 0){
     printf("next_footer->object_size != 0");
   }
-  
+  if(prev_footer->object_size != 0){
+    printf("prev_footer->object_size != 0");
+  }
+
   
   if (next_header->status == UNALLOCATED
       && prev_header->status == UNALLOCATED
