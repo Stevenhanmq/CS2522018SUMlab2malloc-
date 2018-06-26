@@ -299,6 +299,7 @@ void *allocate_object(size_t size) {
 	(object_header *) ((char *) tmp_header + rounded_size);
       printf("new header address: %p\n",&new_header);
       printf("tmp header address: %p\n",&tmp_header);
+      printf("sentinel address: %p\n",&free_list);
 
       new_header->status = UNALLOCATED;
       new_header->object_size = old_footer->object_size;
