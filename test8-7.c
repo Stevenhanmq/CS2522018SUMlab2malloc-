@@ -16,7 +16,7 @@
 int main(int argc, char **argv) {
   // 2 megabytes, an entire OS chunk
 
-  /*size_t size = 2097152;
+  size_t size = 2097152;
   char *ptrs[ALLOCATIONS];
 
   int i;
@@ -36,5 +36,5 @@ int main(int argc, char **argv) {
   for(i = 0; i < ALLOCATIONS; i++){
       free(ptrs[i]);
       print_list();
-      }*/
+      }
 } /* main() */
