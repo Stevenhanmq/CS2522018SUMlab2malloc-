@@ -409,7 +409,8 @@ void free_object(void *ptr) {
   object_footer *tmp_footer = (object_footer*)((char*)tmp_header
 					       + tmp_header->object_size
 					       - sizeof(object_footer));
-  
+  tmp_header->status = UNALLOCATED;
+  tmp_footer->status = UNALLOCATED;
   object_header *next_header = (object_header*)((char *)tmp_header
 					       + tmp_header->object_size);
   
