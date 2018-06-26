@@ -235,7 +235,7 @@ void *allocate_object(size_t size) {
   object_header *tmp_header = free_list->next;
   if (free_list->next == free_list) {
     //check if the memory has been used all up
-    printf("i am here\n");
+    //printf("i am here\n");
     void *new_block = get_memory_from_os(ARENA_SIZE +
 					 (2 * sizeof(object_header)) +
 					 (2 * sizeof(object_footer)));
@@ -280,7 +280,7 @@ void *allocate_object(size_t size) {
 	                                       + sizeof(object_footer)
 	                                       + MINIMUM_SIZE) {
       //            printf("here \n");
-      printf("if i dont see this 3 times\n");
+      //printf("if i dont see this 3 times\n");
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
 			   - sizeof(object_footer));
@@ -297,12 +297,12 @@ void *allocate_object(size_t size) {
       new_footer->status = ALLOCATED;
       object_header *new_header =
 	(object_header *) ((char *) tmp_header + rounded_size);
-      printf("new header address: %p\n",&new_header);
-      printf("tmp header address: %p\n",&tmp_header);
-      printf("sentinel address: %p\n",&free_list);
+      //printf("new header address: %p\n",&new_header);
+      // printf("tmp header address: %p\n",&tmp_header);
+      // printf("sentinel address: %p\n",&free_list);
 
       new_header->status = UNALLOCATED;
-      printf("sentinel->next address: %p\n",&(free_list->next));
+      //      printf("sentinel->next address: %p\n",&(free_list->next));
       new_header->object_size = old_footer->object_size;
       tmp_header->prev->next = new_header;
       new_header->next = tmp_header->next;
