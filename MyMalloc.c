@@ -398,7 +398,8 @@ void free_object(void *ptr) {
   object_header *tmp_header = (object_header*)((char *) ptr
       - sizeof(object_header));
   object_header *iter_header = free_list;
-  while (iter_header->next < tmp_header ) {
+  while (iter_header->next < tmp_header
+	 && iter_header->next != iter_header) {
     iter_header = iter_header->next;
     printf("here we have a loop");
   }
