@@ -424,16 +424,16 @@ void free_object(void *ptr) {
   object_header *prev_header = (object_header*)((char *)tmp_header
 					       - prev_footer->object_size);
   if(next_header->status == UNALLOCATED){
-    printf("next_header->status == UNALLOCATED");  
+    printf("next_header->status == UNALLOCATED\n");  
   }
   if(prev_header->status == UNALLOCATED){
-    printf("prev_header->status == UNALLOCATED");
+    printf("prev_header->status == UNALLOCATED\n");
   }
   if(next_footer->object_size != 0){
-    printf("next_footer->object_size != 0");
+    printf("next_footer->object_size != 0\n");
   }
   if(prev_footer->object_size != 0){
-    printf("prev_footer->object_size != 0");
+    printf("prev_footer->object_size != 0\n");
   }
 
   
