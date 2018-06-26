@@ -397,7 +397,7 @@ void free_object(void *ptr) {
 
   object_header *tmp_header = (object_header*)((char *) ptr
       - sizeof(object_header));
-  object_header *iter_header = (object_header*)((char *)free_list);
+  object_header *iter_header = free_list;
   /*  if (iter_header->prev == iter_header) {
     printf("yes\n");
     iter_header->next = tmp_header;
@@ -405,7 +405,7 @@ void free_object(void *ptr) {
     iter_header->prev = tmp_header;
     tmp_header->next = iter_header;
     }*/
-  printf("%p\n",&iter_header->next);
+  printf("%p\n",&free_list);
   printf("%p\n",&ptr);
   printf("%p\n",&tmp_header);
   
