@@ -235,7 +235,7 @@ void *allocate_object(size_t size) {
   object_header *tmp_header = free_list->next;
   if (free_list->next == free_list) {
     //check if the memory has been used all up
-
+    printf("i am here\n");
     void *new_block = get_memory_from_os(ARENA_SIZE +
 					 (2 * sizeof(object_header)) +
 					 (2 * sizeof(object_footer)));
