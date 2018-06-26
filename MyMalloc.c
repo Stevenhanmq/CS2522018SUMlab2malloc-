@@ -425,8 +425,8 @@ void free_object(void *ptr) {
 					       - prev_footer->object_size);
   if (next_header->status == UNALLOCATED
       && prev_header->status == UNALLOCATED
-      && next_header->object_size != 0
-      && prev_header->object_size != 0) {       // merge both
+      && next_footer->object_size != 0
+      && prev_footer->object_size != 0) {       // merge both
     printf("entered 1\n");
     prev_header->object_size += tmp_header->object_size
                               + next_header->object_size;
