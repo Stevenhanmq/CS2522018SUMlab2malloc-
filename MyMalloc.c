@@ -275,7 +275,7 @@ void *allocate_object(size_t size) {
     
     //decide which approach: split, not split and ask for new memory
     int blank_size = tmp_header->object_size - sizeof(object_footer)
-                                        - sizeof(object_header);    
+                                        - sizeof(object_header);
     if (tmp_header->object_size >=rounded_size + sizeof(object_header)
 	                                       + sizeof(object_footer)
 	                                       + MINIMUM_SIZE) {
@@ -475,8 +475,7 @@ void free_object(void *ptr) {
     prev_header->next = tmp_header->next;
     prev_header->next->prev = prev_header;  
   }
-  else {
-    //printf("entered 4\n");// don't merge
+  else {                                          // don't merge
   }
   return;
   
