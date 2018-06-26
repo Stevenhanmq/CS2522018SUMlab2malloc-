@@ -405,9 +405,9 @@ void free_object(void *ptr) {
     iter_header->prev = tmp_header;
     tmp_header->next = iter_header;
     }*/
-  printf("%p\n",&free_list);
-  printf("%p\n",&ptr);
-  printf("%p\n",&tmp_header);
+  printf("%p\n",&free_list_sentinel);
+  printf("%p\n",ptr);
+  printf("%p\n",tmp_header);
   
 
 } /* free_object() */
