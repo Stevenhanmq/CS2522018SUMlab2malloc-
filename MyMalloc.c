@@ -280,6 +280,7 @@ void *allocate_object(size_t size) {
 	                                       + sizeof(object_footer)
 	                                       + MINIMUM_SIZE) {
       //            printf("here \n");
+      printf("if i dont see this 3 times\n");
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
 			   - sizeof(object_footer));
