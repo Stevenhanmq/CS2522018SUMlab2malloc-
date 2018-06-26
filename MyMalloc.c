@@ -303,16 +303,16 @@ void *allocate_object(size_t size) {
       break;
     }
     else if (tmp_header->object_size >= rounded_size &&
-	     tmp_header->object_size < rounded_size
-	                              + sizeof(object_header)
-	                              + sizeof(object_footer)
+             tmp_header->object_size < rounded_size
+                                      + sizeof(object_header)
+                                      + sizeof(object_footer)
     + MINIMUM_SIZE) { /*situation of 
                                                           don't need split*/
       // printf("anybody see me ?????\n");
       size = tmp_header->object_size - sizeof(object_header)
                                      - sizeof(object_footer);
       object_footer *tmp_footer =
-	(object_footer*)((char*)tmp_header +
+        (object_footer*)((char*)tmp_header +
                                size + sizeof(object_header));
       tmp_header->status = ALLOCATED;
       tmp_footer->status = ALLOCATED;
@@ -328,37 +328,37 @@ void *allocate_object(size_t size) {
 
         void *new_block = get_memory_from_os(ARENA_SIZE +
                                          (2 * sizeof(object_header)) +
-	                                 (2 * sizeof(object_footer)));
+                                         (2 * sizeof(object_footer)));
         object_footer *start_fencepost = (object_footer *) new_block;
         object_header *current_header =
           (object_header *) ((char *) start_fencepost +
-			     sizeof(object_footer));
-	object_footer *current_footer =
-	  (object_footer *) ((char *) current_header +
-			     ARENA_SIZE +
-			     sizeof(object_header));
-	object_header *end_fencepost =
-	  (object_header *) ((char *) current_footer +
-			     sizeof(object_footer));
-	start_fencepost->status = ALLOCATED;
-	start_fencepost->object_size = 0;
-	
-	end_fencepost->status = ALLOCATED;
-	end_fencepost->object_size = 0;
-	end_fencepost->next = NULL;
-	end_fencepost->prev = NULL;
-	
-	current_header->status = UNALLOCATED;
-	current_header->object_size = ARENA_SIZE +
-	                              sizeof(object_header) +
-	                              sizeof(object_footer);
-	
-	current_footer->status = UNALLOCATED;
-	current_footer->object_size = current_header->object_size;
-    	tmp_header->next->prev = current_header;
+                             sizeof(object_footer));
+        object_footer *current_footer =
+          (object_footer *) ((char *) current_header +
+                             ARENA_SIZE +
+                             sizeof(object_header));
+        object_header *end_fencepost =
+          (object_header *) ((char *) current_footer +
+                             sizeof(object_footer));
+        start_fencepost->status = ALLOCATED;
+        start_fencepost->object_size = 0;
+
+        end_fencepost->status = ALLOCATED;
+        end_fencepost->object_size = 0;
+        end_fencepost->next = NULL;
+        end_fencepost->prev = NULL;
+
+        current_header->status = UNALLOCATED;
+        current_header->object_size = ARENA_SIZE +
+                                      sizeof(object_header) +
+                                      sizeof(object_footer);
+
+        current_footer->status = UNALLOCATED;
+        current_footer->object_size = current_header->object_size;
+        tmp_header->next->prev = current_header;
         current_header->next = tmp_header->next;
-	tmp_header->next = current_header;
-	current_header->prev = tmp_header;
+        tmp_header->next = current_header;
+        current_header->prev = tmp_header;
       }
       tmp_header = tmp_header->next;
     }
