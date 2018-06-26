@@ -400,13 +400,50 @@ void free_object(void *ptr) {
   object_header *iter_header = free_list;
   while (iter_header->next < tmp_header ) {
     iter_header = iter_header->next;
-    printf("loop\n");
   }
   object_header *old_header = iter_header->next;
   iter_header->next = tmp_header;
   tmp_header->prev = iter_header;
   tmp_header->next = old_header;
   old_header->prev = tmp_header;
+  object_footer *tmp_footer = (object_footer)((char*)tmp_header
+					       + tmp_header->object_size
+					       - sizeof(object_footer));
+  object_header *next_header = (object_header)((char *)tmp_header
+					       + tmp_header->object_size);
+  object_footer *next_footer = (object_footer)((char *)next_header
+					       + next_header->object_size
+					       - sizeof(object_footer));
+  object_footer *prev_footer = (object_footer)((char *)tmp_header
+					       - sizeof(object_footer));
+  object_header *prev_header = (object_header)((char *)tmp_header
+					       - prev_footer->object_size);
+  if (next_header->status == UNALLOCATED
+      && prev_header->status == UNALLOCATED) {       // merge both
+    prev_header->object_size += tmp_header->object_size
+                              + next_header->object_size;
+    next_footer->object_size = prev_header->object_size;
+    prev_header->next = next_header->next;
+    prev_header->next->prev = prev_header;
+  }
+  else if (next_header->status == UNALLOCATED
+	   && prev_header->status == ALLOCATED) {    // merge right
+    tmp_header->object_size += next_header->object_size;
+    next_footer->object_size =  tmp_header->object_size;
+    tmp_header->next = next_header->next;
+    tmp_header->next->prev = tmp_header;
+  }
+  else if (next_header->status == ALLOCATED
+           && prev_header->status == UNALLOCATED) {  // merge left
+    prev_header->object_size += tmp_header->object_size;
+    tmp_footer->object_size = prev_header->object_size;
+    prev_header->next = tmp_header->next;
+    prev_header->next->prev = prev_header;  
+  }
+  else {                                             // don't merge
+  }
+  return;
+  
 } /* free_object() */
 
 /*
