@@ -306,7 +306,7 @@ void *allocate_object(size_t size) {
 	     tmp_header->object_size < rounded_size
 	                              + sizeof(object_header)
 	                              + sizeof(object_footer)
-  + MINIMUM_SIZE) { /*situation of 
+    + MINIMUM_SIZE) { /*situation of 
                                                           don't need split*/
       // printf("anybody see me ?????\n");
       size = tmp_header->object_size - sizeof(object_header)
