@@ -279,31 +279,22 @@ void *allocate_object(size_t size) {
     if (tmp_header->object_size >=rounded_size + sizeof(object_header)
 	                                       + sizeof(object_footer)
 	                                       + MINIMUM_SIZE) {
-      //            printf("here \n");
-      //printf("if i dont see this 3 times\n");
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
 			   - sizeof(object_footer));
-      //   int blank_size = tmp_header->object_size - sizeof(object_footer)
-      //                                - sizeof(object_header);
       object_footer *old_footer =
 	(object_footer *) ((char *) tmp_header
 			          + sizeof(object_header)
 	              		  + blank_size);
       old_footer->object_size = old_footer->object_size - rounded_size;
-      //            printf("%d\n",(int)old_footer->object_size);
       tmp_header->status = ALLOCATED;
       tmp_header->object_size = rounded_size;
       new_footer->object_size = rounded_size;
       new_footer->status = ALLOCATED;
       object_header *new_header =
 	(object_header *) ((char *) tmp_header + rounded_size);
-      //printf("new header address: %p\n",&new_header);
-      // printf("tmp header address: %p\n",&tmp_header);
-      // printf("sentinel address: %p\n",&free_list);
 
       new_header->status = UNALLOCATED;
-      //      printf("sentinel->next address: %p\n",&(free_list->next));
       new_header->object_size = old_footer->object_size;
       tmp_header->prev->next = new_header;
       new_header->next = tmp_header->next;
