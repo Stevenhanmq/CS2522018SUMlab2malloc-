@@ -424,7 +424,9 @@ void free_object(void *ptr) {
   object_header *prev_header = (object_header*)((char *)tmp_header
 					       - prev_footer->object_size);
   if (next_header->status == UNALLOCATED
-      && prev_header->status == UNALLOCATED) {       // merge both
+      && prev_header->status == UNALLOCATED
+      && next_header->object_size != 0
+      && prev_header->object_size != 0) {       // merge both
     prev_header->object_size += tmp_header->object_size
                               + next_header->object_size;
     next_footer->object_size = prev_header->object_size;
@@ -432,14 +434,18 @@ void free_object(void *ptr) {
     prev_header->next->prev = prev_header;
   }
   else if (next_header->status == UNALLOCATED
-	   && prev_header->status == ALLOCATED) {    // merge right
+	   && prev_header->status == ALLOCATED
+	   && next_header->object_size != 0
+	   && prev_header->object_size != 0) {    // merge right
     tmp_header->object_size += next_header->object_size;
     next_footer->object_size =  tmp_header->object_size;
     tmp_header->next = next_header->next;
     tmp_header->next->prev = tmp_header;
   }
   else if (next_header->status == ALLOCATED
-           && prev_header->status == UNALLOCATED) {  // merge left
+           && prev_header->status == UNALLOCATED
+	   && next_header->object_size != 0
+	   && prev_header->object_size != 0) {  // merge left
     prev_header->object_size += tmp_header->object_size;
     tmp_footer->object_size = prev_header->object_size;
     prev_header->next = tmp_header->next;
@@ -452,8 +458,7 @@ void free_object(void *ptr) {
 } /* free_object() */
 
 /*
- * Return the size of the object pointed by ptr. We assume that ptr points to
- * usable memory in a valid obejct.
+ * Return the size of the object pointed by ptr. We assume that ptr points * usable memory in a valid obejct.
  */
 
 size_t object_size(void *ptr) {
