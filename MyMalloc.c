@@ -388,8 +388,8 @@ void free_object(void *ptr) {
   //should be at,
   //and then find out that if it should merge with adjacent blocks
 
-  object_header *tmp_header = (object_header*)((char *) ptr
-					       - sizeof(object_header));
+  /*  object_header *tmp_header = (object_header*)((char *) ptr
+      - sizeof(object_header));*/
   object_header *iter_header = free_list;
   /*  if (iter_header->prev == iter_header) {
     printf("yes\n");
