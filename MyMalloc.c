@@ -440,7 +440,7 @@ void free_object(void *ptr) {
     tmp_header->next = next_header->next;
     tmp_header->next->prev = tmp_header;
   }
-  else if ((next_header->status == ALLOCATED
+  else if ((next_header->status == UNALLOCATED
            && prev_header->status == UNALLOCATED)||
            (next_header->status == UNALLOCATED
            && prev_header->status == UNALLOCATED
