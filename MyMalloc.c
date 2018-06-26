@@ -390,7 +390,7 @@ void free_object(void *ptr) {
       - sizeof(object_header));
   object_header *iter_header = free_list;
   while (iter_header->next < tmp_header
-	 && iter_header->next != iter_header) {
+  && iter_header->next != iter_header) {
     iter_header = iter_header->next;
     // printf("here we have a loop");
   }
@@ -420,7 +420,7 @@ void free_object(void *ptr) {
   if (next_header->status == UNALLOCATED
       && prev_header->status == UNALLOCATED
       && next_footer->object_size != 0
-      && prev_footer->object_size != 0) {       // merge both
+  && prev_footer->object_size != 0) {       // merge both
     //printf("entered 1\n");
     prev_header->object_size += tmp_header->object_size
                               + next_header->object_size;
@@ -428,13 +428,11 @@ void free_object(void *ptr) {
     prev_header->next = next_header->next;
     prev_header->next->prev = prev_header;
   }
-  else if (
-	   (next_header->status == UNALLOCATED
+  else if ((next_header->status == UNALLOCATED
 	    && prev_header->status == ALLOCATED)||
 	   (next_header->status == UNALLOCATED
 	    && prev_header->status == UNALLOCATED
-	    && next_footer->object_size != 0)
-	   ) {    // merge right
+	    && next_footer->object_size != 0)) {    // merge right
     //printf("entered 2\n");
     tmp_header->object_size += next_header->object_size;
     next_footer->object_size =  tmp_header->object_size;
