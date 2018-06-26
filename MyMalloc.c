@@ -303,11 +303,11 @@ void *allocate_object(size_t size) {
       new_header->next->prev = new_header;
       break;
     }
-    else if (tmp_header->object_size >= rounded_size &&
-             tmp_header->object_size < rounded_size
+    else if ((tmp_header->object_size >= rounded_size) &&
+             (tmp_header->object_size < rounded_size
                                       + sizeof(object_header)
                                       + sizeof(object_footer)
-    + MINIMUM_SIZE) { /*situation of 
+	      + MINIMUM_SIZE)) { /*situation of 
                                                           don't need split*/
       // printf("anybody see me ?????\n");
       size = tmp_header->object_size - sizeof(object_header)
@@ -390,8 +390,8 @@ void free_object(void *ptr) {
   object_header *tmp_header = (object_header*)((char *) ptr
       - sizeof(object_header));
   object_header *iter_header = free_list;
-  while (iter_header->next < tmp_header
-  && iter_header->next != free_list) {
+  while ((iter_header->next < tmp_header)
+	 && (iter_header->next != free_list)) {
     iter_header = iter_header->next;
     // printf("here we have a loop");
   }
@@ -418,10 +418,10 @@ void free_object(void *ptr) {
   object_header *prev_header = (object_header*)((char *)tmp_header
                                                - prev_footer->object_size);
   
-  if (next_header->status == UNALLOCATED
-      && prev_footer->status == UNALLOCATED
-      && next_header->object_size != 0
-  && prev_footer->object_size != 0) {       // merge both
+  if ((next_header->status == UNALLOCATED)
+      && (prev_footer->status == UNALLOCATED)
+      && (next_header->object_size != 0)
+      && (prev_footer->object_size != 0)) {       // merge both
     //printf("entered 1\n");
     prev_header->object_size += tmp_header->object_size
                               + next_header->object_size;
@@ -429,22 +429,22 @@ void free_object(void *ptr) {
     prev_header->next = next_header->next;
     prev_header->next->prev = prev_header;
   }
-  else if ((next_header->status == UNALLOCATED
-            && prev_footer->status == ALLOCATED)||
-            (next_header->status == UNALLOCATED
-            && prev_footer->status == UNALLOCATED
-  && next_header->object_size != 0)) {    // merge right
+  else if (((next_header->status == UNALLOCATED)
+            && (prev_footer->status == ALLOCATED))||
+	   ((next_header->status == UNALLOCATED)
+            && (prev_footer->status == UNALLOCATED)
+	    && (next_header->object_size != 0))) {    // merge right
     //printf("entered 2\n");
     tmp_header->object_size += next_header->object_size;
     next_footer->object_size =  tmp_header->object_size;
     tmp_header->next = next_header->next;
     tmp_header->next->prev = tmp_header;
   }
-  else if ((next_header->status == ALLOCATED
-           && prev_footer->status == UNALLOCATED)||
-           (next_header->status == UNALLOCATED
-           && prev_footer->status == UNALLOCATED
-  && prev_footer->object_size != 0)) {  // merge left
+  else if (((next_header->status == ALLOCATED)
+	    && (prev_footer->status == UNALLOCATED))||
+           ((next_header->status == UNALLOCATED)
+	    && (prev_footer->status == UNALLOCATED)
+	    && (prev_footer->object_size != 0))) {  // merge left
     // printf("entered 3\n");
     prev_header->object_size += tmp_header->object_size;
     tmp_footer->object_size = prev_header->object_size;
