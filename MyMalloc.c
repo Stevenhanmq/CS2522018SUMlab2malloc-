@@ -406,19 +406,21 @@ void free_object(void *ptr) {
   tmp_header->prev = iter_header;
   tmp_header->next = old_header;
   old_header->prev = tmp_header;
-  object_footer *tmp_footer = (object_footer)((char*)tmp_header + tmp_header->object_size - sizeof(object_footer));
+  object_footer *tmp_footer = (object_footer*)((char*)tmp_header
+					       + tmp_header->object_size
+					       - sizeof(object_footer));
   
-  object_header *next_header = (object_header)((char *)tmp_header
+  object_header *next_header = (object_header*)((char *)tmp_header
 					       + tmp_header->object_size);
   
-  object_footer *next_footer = (object_footer)((char *)next_header
+  object_footer *next_footer = (object_footer*)((char *)next_header
 					       + next_header->object_size
 					       - sizeof(object_footer));
   
-  object_footer *prev_footer = (object_footer)((char *)tmp_header
+  object_footer *prev_footer = (object_footer*)((char *)tmp_header
 					       - sizeof(object_footer));
   
-  object_header *prev_header = (object_header)((char *)tmp_header
+  object_header *prev_header = (object_header*)((char *)tmp_header
 					       - prev_footer->object_size);
   if (next_header->status == UNALLOCATED
       && prev_header->status == UNALLOCATED) {       // merge both
