@@ -302,6 +302,7 @@ void *allocate_object(size_t size) {
       printf("sentinel address: %p\n",&free_list);
 
       new_header->status = UNALLOCATED;
+      printf("sentinel->next address: %p\n",&free_list->next);
       new_header->object_size = old_footer->object_size;
       tmp_header->prev->next = new_header;
       new_header->next = tmp_header->next;
