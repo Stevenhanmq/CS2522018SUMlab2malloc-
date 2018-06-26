@@ -436,8 +436,8 @@ void free_object(void *ptr) {
   }
   else if (next_header->status == UNALLOCATED
 	   && prev_header->status == ALLOCATED
-	   && next_header->object_size != 0
-	   && prev_header->object_size != 0) {    // merge right
+	   && next_footer->object_size != 0
+	   && prev_footer->object_size != 0) {    // merge right
      printf("entered 2\n");
     tmp_header->object_size += next_header->object_size;
     next_footer->object_size =  tmp_header->object_size;
@@ -446,9 +446,9 @@ void free_object(void *ptr) {
   }
   else if (next_header->status == ALLOCATED
            && prev_header->status == UNALLOCATED
-	   && next_header->object_size != 0
-	   && prev_header->object_size != 0) {  // merge left
-     printf("entered 3\n");
+	   && next_footer->object_size != 0
+	   && prev_footer->object_size != 0) {  // merge left
+    printf("entered 3\n");
     prev_header->object_size += tmp_header->object_size;
     tmp_footer->object_size = prev_header->object_size;
     prev_header->next = tmp_header->next;
