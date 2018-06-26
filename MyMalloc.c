@@ -242,14 +242,14 @@ void *allocate_object(size_t size) {
     object_footer *start_fencepost = (object_footer *) new_block;
     object_header *current_header =
       (object_header *) ((char *) start_fencepost +
-			 sizeof(object_footer));
+                                  sizeof(object_footer));
     object_footer *current_footer =
       (object_footer *) ((char *) current_header +
-			 ARENA_SIZE +
-			 sizeof(object_header));
+                         ARENA_SIZE +
+                         sizeof(object_header));
     object_header *end_fencepost =
       (object_header *) ((char *) current_footer +
-			 sizeof(object_footer));
+                         sizeof(object_footer));
     start_fencepost->status = ALLOCATED;
     start_fencepost->object_size = 0;
     
@@ -277,7 +277,7 @@ void *allocate_object(size_t size) {
     int blank_size = tmp_header->object_size - sizeof(object_footer)
                                         - sizeof(object_header);
     if (tmp_header->object_size >=rounded_size + sizeof(object_header)
-	                                       + sizeof(object_footer)
+                                               + sizeof(object_footer)
     + MINIMUM_SIZE) {
       object_footer *new_footer =
 	(object_footer *) ((char *) tmp_header + rounded_size
