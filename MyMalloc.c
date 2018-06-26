@@ -402,8 +402,11 @@ void free_object(void *ptr) {
     iter_header = iter_header->next;
     printf("loop\n");
   }
-  printf("out loop\n");
-
+  object_header *old_header = iter_header->next;
+  iter_header->next = tmp_header;
+  tmp_header->prev = iter_header;
+  tmp_header->next = old_header;
+  old_header->prev = tmp_header;
 } /* free_object() */
 
 /*
