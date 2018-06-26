@@ -459,7 +459,8 @@ void free_object(void *ptr) {
 } /* free_object() */
 
 /*
- * Return the size of the object pointed by ptr. We assume that ptr points * usable memory in a valid obejct.
+ * Return the size of the object pointed by ptr. We assume that ptr points 
+ * usable memory in a valid obejct.
  */
 
 size_t object_size(void *ptr) {
