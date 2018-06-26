@@ -96,7 +96,7 @@ void increase_free_calls() {
 } /* increase_free_calls() */
 
 /*
- * externed version of at_exit_handler(), which can be passed to atexit().
+ * Externed version of at_exit_handler(), which can be passed to atexit().
  * See atexit(3).
  */
 
