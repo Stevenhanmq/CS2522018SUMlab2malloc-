@@ -459,7 +459,7 @@ void free_object(void *ptr) {
     prev_header->object_size += tmp_header->object_size;
     tmp_footer->object_size = prev_header->object_size;
     prev_header->next = tmp_header->next;
-    prev_header->next->prev = prev_header;  
+    prev_header->next->prev = prev_header;
   }
   else {                                          // don't merge
   }
