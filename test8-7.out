@@ -1,0 +1,29 @@
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: 
+FreeList: [offset:0,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]->[offset:6291744,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]->[offset:6291744,size:2097200]->[offset:8388992,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]->[offset:6291744,size:2097200]->[offset:8388992,size:2097200]->[offset:10486240,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]->[offset:6291744,size:2097200]->[offset:8388992,size:2097200]->[offset:10486240,size:2097200]->[offset:12587584,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]->[offset:6291744,size:2097200]->[offset:8388992,size:2097200]->[offset:10486240,size:2097200]->[offset:12587584,size:2097200]->[offset:14684832,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]->[offset:6291744,size:2097200]->[offset:8388992,size:2097200]->[offset:10486240,size:2097200]->[offset:12587584,size:2097200]->[offset:14684832,size:2097200]->[offset:16782080,size:2097200]
+FreeList: [offset:0,size:2097200]->[offset:2097248,size:2097200]->[offset:4194496,size:2097200]->[offset:6291744,size:2097200]->[offset:8388992,size:2097200]->[offset:10486240,size:2097200]->[offset:12587584,size:2097200]->[offset:14684832,size:2097200]->[offset:16782080,size:2097200]->[offset:18879328,size:2097200]
+
+-------------------
+HeapSize:	20972480 bytes
+# mallocs:	10
+# reallocs:	0
+# callocs:	0
+# frees:	10
+
+-------------------

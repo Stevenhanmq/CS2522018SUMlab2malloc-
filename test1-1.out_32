@@ -1,0 +1,15 @@
+
+---- Running test1-1 ---
+Before any allocation
+FreeList: [offset:0,size:2097176]
+mem1 = malloc(8)
+FreeList: [offset:32,size:2097144]
+
+-------------------
+HeapSize:	2097200 bytes
+# mallocs:	1
+# reallocs:	0
+# callocs:	0
+# frees:	0
+
+-------------------

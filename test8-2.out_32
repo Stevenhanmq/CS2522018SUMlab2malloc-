@@ -1,0 +1,11 @@
+FreeList: 
+FreeList: [offset:0,size:2097176]
+
+-------------------
+HeapSize:	2097200 bytes
+# mallocs:	1
+# reallocs:	0
+# callocs:	0
+# frees:	1
+
+-------------------
